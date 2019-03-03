@@ -1,17 +1,12 @@
+
+// GET fetch effect
+const get = ({url, action, error}, dispatch) =>
+  fetch(url)
+    .then(response => response.json())
+    .then(data => dispatch(action, data))
+    .catch(err => dispatch(error, err))
+
 // Http service
 export const Http = {
-
-  // Fetch action
-  fetch: (props) => ({
-    effect: (props, dispatch) => {
-      fetch(props.url)
-        .then(response => response.json())
-        .then(data => dispatch(props.action, data))
-        .catch(err => dispatch(props.error, err))
-    },
-    url: props.url,
-    action: props.action,
-    error: props.error
-  })
-
-};
+  get: ({url, action, error}) => [get, {url, action, error}]
+}
