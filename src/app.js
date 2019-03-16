@@ -4,6 +4,7 @@ import 'spectre.css'
 
 import {Http} from './utils'
 
+const API_URL = 'http://192.168.2.28:8000'
 
 // Action pour placer les users dans le state
 const ReceiveUsers = (state, data) => ({
@@ -12,7 +13,6 @@ const ReceiveUsers = (state, data) => ({
   fetchSucceeded: true,
   users: data
 })
-
 
 const OpenUserModal = (state, userId) => ({
   ...state,
@@ -24,12 +24,9 @@ const CloseUserModal = (state) => ({
   userId: null
 })
 
-
-
-
 // Component pour afficher un user
 const UserModal = ({user}) => (
-  <div class={{modal: true, active: true}} onclick={CloseUserModal}>
+  <div class={{modal: true, active: !!user}} onclick={CloseUserModal}>
     <a class="modal-overlay" onclick={CloseUserModal} aria-label="Close"></a>
     <div class="modal-container" role="document">
       <div class="modal-header">
@@ -42,7 +39,8 @@ const UserModal = ({user}) => (
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary">Share</button><a class="btn btn-link">Close</a>
+        <button class="btn btn-primary">Share</button>
+        <a class="btn btn-link">Close</a>
       </div>
     </div>
   </div>
@@ -59,7 +57,7 @@ app({
       userData: {}
     },
     Http.get({
-      url: 'https://jsonplaceholder.typicode.com/todos/',
+      url: API_URL + '/api/users',
       action: ReceiveUsers
     })
   ],
