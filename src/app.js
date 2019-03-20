@@ -1,17 +1,18 @@
 import {h, app} from 'hyperapp'
 
 import 'spectre.css'
+import './style.css'
 
 import {Http} from './utils'
 
-const API_URL = 'http://192.168.2.28:8000'
+const API_URL = 'http://localhost:8000'
 
 // Action pour placer les users dans le state
 const ReceiveUsers = (state, data) => ({
   ...state,
   isFetching: false,
   fetchSucceeded: true,
-  users: data
+  users: data.data
 })
 
 const OpenUserModal = (state, userId) => ({
@@ -25,7 +26,7 @@ const CloseUserModal = (state) => ({
 })
 
 // Component pour afficher un user
-const UserModal = ({user}) => (
+const UserModal = ({user}) => user && (
   <div class={{modal: true, active: !!user}} onclick={CloseUserModal}>
     <a class="modal-overlay" onclick={CloseUserModal} aria-label="Close"></a>
     <div class="modal-container" role="document">
@@ -50,7 +51,7 @@ const UserModal = ({user}) => (
 app({
   init: [
     {
-      userId: 3,
+      userId: null,
       isFetching: true,
       fetchSucceeded: false,
       users: [],
@@ -64,19 +65,18 @@ app({
   view: (state) => (
     <main class="app">
       <div class="hero bg-gray">
-        <div class="hero-body">
+        <div class="hero-body wrapper">
           <h1>User List</h1>
           <p>From a REST API</p>
         </div>
       </div>
-      <div class="container" style={{maxWidth: '1024px'}}>
+      <div class="container wrapper">
         <table class="table table-striped table-hover">
           <thead>
             <tr>
               <th>#</th>
               <th>name</th>
-              <th>gender</th>
-              <th>date</th>
+              <th>email</th>
             </tr>
           </thead>
           <tbody>
@@ -88,9 +88,8 @@ app({
                     state.users.map(user => (
                       <tr>
                         <td>{user.id}</td>
-                        <td><a onclick={[OpenUserModal, user.id]}>{user.title}</a></td>
-                        <td>{user.completed}</td>
-                        <td>X</td>
+                        <td><a onclick={[OpenUserModal, user.id]}>{user.name}</a></td>
+                        <td>{user.email}</td>
                       </tr>
                     ))
                   )
@@ -99,7 +98,7 @@ app({
           </tbody>
         </table>
       </div>
-      {state.userId && <UserModal user={state.users[state.userId]} />}
+      {state.userId && <UserModal user={state.users.find(user => user.id === state.userId)} />}
       <pre class="state">{JSON.stringify(state, null, 2)}</pre>
     </main>
   ),
