@@ -17,9 +17,16 @@ export const FetchUsers = (state) => [
   },
   Http.get({
     url: '/users',
-    action: ReceiveUsers
+    action: ReceiveUsers,
+    error: FetchUsersFailed
   })
 ]
+
+export const FetchUsersFailed = (state) => ({
+  ...state,
+  isFetching: false,
+  fetched: false
+})
 
 // Action pour placer les users dans le state
 export const ReceiveUsers = (state, data) => ({
@@ -30,20 +37,30 @@ export const ReceiveUsers = (state, data) => ({
 })
 
 // Déclanche le fetch
-export const FetchUser = (state, id) => [
-  SetUser(state, id, {loading: true}),
-  Http.get({
-    url: '/users/' + id,
-    action: [SetUser, id]
-  })
-]
-// Action pour placer les users dans le state
+export const FetchUser = (state, id) => {
+  if (!state.userData[id] || !state.userData[id].id) {
+    return [
+      SetUser(state, id, {isFetching: true}),
+      Http.get({
+        url: '/users/' + id,
+        action: [SetUser, id],
+        error: [FetchUserFailed, id]
+      })
+    ]
+  }
+}
+
 export const SetUser = (state, id, user) => ({
   ...state,
   userData: {
     ...state.userData,
     [id]: user
   }
+})
+
+export const FetchUserFailed = (state, id, error) => SetUser(state, id, {
+  isFetching: false,
+  error: error.message
 })
 
 export const CloseModal = (state, ev) => {

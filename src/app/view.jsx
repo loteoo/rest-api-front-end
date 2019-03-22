@@ -25,7 +25,7 @@ export const view = (state) => (
         <tbody>
           {
             state.isFetching
-              ? <div class="loading loading-lg"></div>
+              ? <tr><td colspan="3" align="center"><div class="loading loading-lg"></div></td></tr>
               : state.fetched
                 ? (
                   state.users.map(user => (
@@ -36,7 +36,7 @@ export const view = (state) => (
                     </tr>
                   ))
                 )
-                : 'FETCH FAILDED'
+                : <tr><td colspan="3" align="center"><b>Fetch failed</b></td></tr>
           }
         </tbody>
       </table>
@@ -48,30 +48,35 @@ export const view = (state) => (
 
 // Component pour afficher un user
 const UserModal = ({userId, user}) => {
-  const loaded = user && user.id
   return (
     <div class={{modal: true, active: !!user}} onclick={CloseModal} onmount={[FetchUser, userId]}>
       <a class="modal-overlay" onclick={CloseModal} aria-label="Close"></a>
-      <div class="modal-container" role="document">
-        <div class="modal-header">
-          <a class="btn btn-clear float-right" aria-label="Close"></a>
-          <div class="modal-title h5">{loaded ? `User #${user.id}` : 'Loading...'}</div>
+      {user && (
+        <div class="modal-container" role="document">
+          <div class="modal-header">
+            <a class="btn btn-clear float-right" aria-label="Close"></a>
+            <div class="modal-title h5">{user.id ? `User #${user.id}` : 'Loading...'}</div>
+          </div>
+          <div class="modal-body">
+            {
+              user.id ? (
+                <div class="content">
+                  <span>Name: </span>
+                  <h4>{user.name}</h4>
+                  <span>Email: </span>
+                  <h4>{user.email}</h4>
+                </div>
+              ) : user.error
+                ? <b>Error fetching user</b>
+                : <div class="loading loading-lg"></div>
+            }
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary">Share</button>
+            <a class="btn btn-link">Close</a>
+          </div>
         </div>
-        <div class="modal-body">
-          {loaded ? (
-            <div class="content">
-              <span>Name: </span>
-              <h4>{user.name}</h4>
-              <span>Email: </span>
-              <h4>{user.email}</h4>
-            </div>
-          ) : <div class="loading loading-lg"></div>}
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary">Share</button>
-          <a class="btn btn-link">Close</a>
-        </div>
-      </div>
+      )}
     </div>
   )
 }
