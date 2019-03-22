@@ -1,5 +1,5 @@
 
-import {Location} from './utils'
+import {Location} from '../utils'
 import {ParseUrl} from './actions'
 
 export const subscriptions = (state) => {

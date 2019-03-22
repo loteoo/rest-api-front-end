@@ -1,6 +1,6 @@
 import {h} from 'hyperapp'
 
-import {Link} from './utils'
+import {Link} from '../utils'
 
 import {FetchUser, CloseModal} from './actions'
 

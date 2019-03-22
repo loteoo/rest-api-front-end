@@ -3,11 +3,11 @@ import {h, app} from 'hyperapp'
 import 'spectre.css'
 import './style.css'
 
-import {init} from './init'
-import {view} from './view'
-import {subscriptions} from './subscriptions'
+import {init} from './app/init'
+import {view} from './app/view'
+import {subscriptions} from './app/subscriptions'
 
-import {FetchUsers} from './actions'
+import {FetchUsers} from './app/actions'
 import {enableOnMountDomEvent} from './utils'
 
 enableOnMountDomEvent()

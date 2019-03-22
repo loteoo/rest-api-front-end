@@ -1,5 +1,5 @@
 
-import {Http, Location} from './utils'
+import {Http, Location} from '../utils'
 
 export const ParseUrl = (state, path) => {
   const parts = path.split('/').filter((part, index) => index !== 0)
