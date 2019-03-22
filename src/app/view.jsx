@@ -72,7 +72,7 @@ const UserModal = ({userId, user}) => {
             }
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary">Share</button>
+            <button class="btn btn-primary">Ok</button>
             <a class="btn btn-link">Close</a>
           </div>
         </div>
