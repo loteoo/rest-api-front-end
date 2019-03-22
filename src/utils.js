@@ -3,7 +3,7 @@ import {h} from 'hyperapp'
 
 // Copier / collé d'un autre projet, normallement ce qui est dans ce fichier sera dans NPM
 
-const apiEndPoint = '//' + window.location.hostname + ':8000/api'
+const apiEndPoint = 'http://localhost:8000/api'
 
 // HTTP effects
 const get = ({url, action, error}, dispatch) =>
