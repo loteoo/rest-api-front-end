@@ -14,7 +14,7 @@ enableOnMountDomEvent()
 
 // Initialize the app
 app({
-  init: FetchUsers(ParseUrl(init, window.location.pathname)),
+  init: FetchUsers(ParseUrl(init, window.location.pathname.replace(baseHref, ''))),
   view,
   subscriptions,
   container: document.body

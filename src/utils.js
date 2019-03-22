@@ -68,7 +68,6 @@ const changed = ({action}, dispatch) => {
   }
 }
 
-
 // Location service
 export const Location = {
   go: ({to}) => [go, {to}],
