@@ -47,16 +47,18 @@ export const Http = {
   del: ({url, action, error}) => [del, {url, action, error}]
 }
 
+export const baseHref = '/rest-api-front-end'
+
 // Navigation effect
 const go = ({to}, dispatch) => {
-  history.pushState(null, '', to)
+  history.pushState(null, '', baseHref + to)
   dispatchEvent(new CustomEvent('pushstate'))
 }
 
 // Navigation subscription
 const changed = ({action}, dispatch) => {
   const handleLocationChange = ev => {
-    dispatch(action, window.location.pathname)
+    dispatch(action, window.location.pathname.replace(baseHref, ''))
   }
   addEventListener('pushstate', handleLocationChange)
   addEventListener('popstate', handleLocationChange)
@@ -65,6 +67,7 @@ const changed = ({action}, dispatch) => {
     removeEventListener('popstate', handleLocationChange)
   }
 }
+
 
 // Location service
 export const Location = {
